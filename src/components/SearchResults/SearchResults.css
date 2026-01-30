@@ -1,0 +1,236 @@
+.search-results {
+  min-height: calc(100vh - 68px);
+  padding: 120px 60px 60px;
+  background-color: #0a0a0a;
+}
+
+.search-results__container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.search-results__title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 40px;
+  letter-spacing: -0.5px;
+}
+
+.search-results__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.search-results__card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-results__card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+.search-results__image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 150%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.search-results__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.search-results__card:hover .search-results__image {
+  transform: scale(1.05);
+}
+
+.search-results__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.search-results__card:hover .search-results__overlay {
+  opacity: 1;
+}
+
+.search-results__button {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #e50914;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-results__button:hover {
+  background-color: #f40612;
+  transform: scale(1.05);
+}
+
+.search-results__info {
+  padding: 16px;
+}
+
+.search-results__movie-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
+  min-height: 45px;
+}
+
+.search-results__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.search-results__year {
+  color: #b3b3b3;
+}
+
+.search-results__rating {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.search-results__more-button {
+  display: block;
+  margin: 0 auto;
+  padding: 14px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-results__more-button:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: #e50914;
+  transform: translateY(-2px);
+}
+
+.search-results__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.search-results__empty-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 16px;
+}
+
+.search-results__empty-text {
+  font-size: 18px;
+  color: #b3b3b3;
+  margin: 0;
+}
+
+@media screen and (max-width: 1024px) {
+  .search-results {
+    padding: 100px 40px 40px;
+  }
+
+  .search-results__grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .search-results {
+    padding: 90px 20px 30px;
+  }
+
+  .search-results__title {
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
+
+  .search-results__grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .search-results__empty-title {
+    font-size: 24px;
+  }
+
+  .search-results__empty-text {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .search-results {
+    padding: 80px 16px 24px;
+  }
+
+  .search-results__title {
+    font-size: 22px;
+    margin-bottom: 24px;
+  }
+
+  .search-results__grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+
+  .search-results__movie-title {
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  .search-results__meta {
+    font-size: 11px;
+  }
+
+  .search-results__more-button {
+    padding: 12px 32px;
+    font-size: 14px;
+  }
+}
