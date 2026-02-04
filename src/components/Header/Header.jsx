@@ -1,63 +1,79 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { MAIN_ROUTE } from '../../utils/constants';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
-function Header({ onSearch }) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+function Header({ onSearch, contentType, onContentTypeChange }) {
+  const [searchValue, setSearchValue] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      onSearch(searchQuery);
+    if (searchValue.trim()) {
+      onSearch(searchValue);
       navigate('/search');
-      setIsSearchOpen(false);
     }
   };
 
-  const handleSearchToggle = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if (isSearchOpen) {
-      setSearchQuery('');
-    }
+  const handleLogoClick = () => {
+    setSearchValue('');
+    onSearch('');
+    navigate('/');
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isScrolled ? 'header--scrolled' : ''}`}>
       <div className="header__container">
-        <Link to={MAIN_ROUTE} className="header__logo">
-          PRELUDE
-        </Link>
+        <div className="header__content">
+          <button className="header__logo" onClick={handleLogoClick}>
+            PRELUDE
+          </button>
 
-        <div className="header__search-container">
-          <form 
-            className={`header__search-form ${isSearchOpen ? 'header__search-form_open' : ''}`}
-            onSubmit={handleSubmit}
-          >
+          <form className="header__search" onSubmit={handleSubmit}>
             <input
               type="text"
-              className="header__search-input"
+              className="header__input"
               placeholder="Buscar películas..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-            <button 
-              type="button"
-              className="header__search-icon"
-              onClick={handleSearchToggle}
-            >
-              {isSearchOpen ? '✕' : '🔍'}
+            <button type="submit" className="header__search-button">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM18.5 18.5l-4-4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           </form>
         </div>
 
-        <nav className="header__nav">
-          <Link to={MAIN_ROUTE} className="header__nav-link">
+        <div className="header__toggle">
+          <button
+            className={`header__toggle-button ${contentType === 'movie' ? 'header__toggle-button--active' : ''}`}
+            onClick={() => onContentTypeChange('movie')}
+          >
             Películas
-          </Link>
-        </nav>
+          </button>
+          <button
+            className={`header__toggle-button ${contentType === 'tv' ? 'header__toggle-button--active' : ''}`}
+            onClick={() => onContentTypeChange('tv')}
+          >
+            Series
+          </button>
+        </div>
       </div>
     </header>
   );

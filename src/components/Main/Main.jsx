@@ -1,66 +1,103 @@
 import { useState, useEffect } from 'react';
-import Hero from '../Hero/Hero';
 import MovieRow from '../MovieRow/MovieRow';
-import About from '../About/About';
 import moviesApi from '../../utils/MoviesApi';
 import './Main.css';
 
-function Main({ onWatchTrailer }) {
-  const [trendingMovies, setTrendingMovies] = useState([]);
-  const [topRatedMovies, setTopRatedMovies] = useState([]);
-  const [upcomingMovies, setUpcomingMovies] = useState([]);
+function Main({ contentType, onWatchTrailer }) {
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Cargar películas en tendencia
-    fetch(`${moviesApi._baseUrl}/trending/movie/week?api_key=${moviesApi._apiKey}&language=es-MX`)
-      .then(res => res.json())
-      .then(data => setTrendingMovies(data.results))
-      .catch(err => console.error('Error loading trending movies:', err));
+    loadCategories();
+  }, [contentType]);
 
-    // Cargar películas mejor valoradas
-    fetch(`${moviesApi._baseUrl}/movie/top_rated?api_key=${moviesApi._apiKey}&language=es-MX`)
-      .then(res => res.json())
-      .then(data => setTopRatedMovies(data.results))
-      .catch(err => console.error('Error loading top rated movies:', err));
+  async function loadCategories() {
+    try {
+      setIsLoading(true);
+      
+      // Obtener películas/series por género
+      const genreIds = contentType === 'movie' 
+        ? {
+            action: 28,      // Acción
+            scifi: 878,      // Ciencia Ficción
+            drama: 18,       // Drama
+            comedy: 35,      // Comedia
+            thriller: 53,    // Thriller
+            horror: 27,      // Terror
+          }
+        : {
+            action: 10759,   // Acción y Aventura
+            scifi: 10765,    // Sci-Fi & Fantasy
+            drama: 18,       // Drama
+            comedy: 35,      // Comedia
+            crime: 80,       // Crimen
+            mystery: 9648,   // Misterio
+          };
 
-    // Cargar próximos estrenos
-    fetch(`${moviesApi._baseUrl}/movie/upcoming?api_key=${moviesApi._apiKey}&language=es-MX`)
-      .then(res => res.json())
-      .then(data => setUpcomingMovies(data.results))
-      .catch(err => console.error('Error loading upcoming movies:', err));
-  }, []);
+      const categoryPromises = Object.entries(genreIds).map(([key, genreId]) =>
+        moviesApi.getContentByGenre(contentType, genreId)
+          .then(data => ({
+            key,
+            data: data.results
+          }))
+      );
+
+      const results = await Promise.all(categoryPromises);
+      
+      const genreNames = contentType === 'movie'
+        ? {
+            action: 'Acción',
+            scifi: 'Ciencia Ficción',
+            drama: 'Drama',
+            comedy: 'Comedia',
+            thriller: 'Thriller',
+            horror: 'Terror',
+          }
+        : {
+            action: 'Acción y Aventura',
+            scifi: 'Sci-Fi & Fantasy',
+            drama: 'Drama',
+            comedy: 'Comedia',
+            crime: 'Crimen',
+            mystery: 'Misterio',
+          };
+
+      const newCategories = results.map(result => ({
+        title: genreNames[result.key],
+        items: result.data,
+      }));
+
+      setCategories(newCategories);
+    } catch (err) {
+      console.error('Error loading categories:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <main className="main">
+        <div className="main__loading">
+          <div className="main__spinner"></div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="main">
-      <Hero onWatchTrailer={onWatchTrailer} />
-      
-      <div className="main__content">
-        {trendingMovies.length > 0 && (
-          <MovieRow 
-            title="Tendencias de la semana"
-            movies={trendingMovies}
-            onMovieClick={onWatchTrailer}
+      <div className="main__container">
+        {categories.map((category, index) => (
+          <MovieRow
+            key={index}
+            title={category.title}
+            items={category.items}
+            contentType={contentType}
+            onWatchTrailer={onWatchTrailer}
           />
-        )}
-        
-        {topRatedMovies.length > 0 && (
-          <MovieRow 
-            title="Mejor valoradas"
-            movies={topRatedMovies}
-            onMovieClick={onWatchTrailer}
-          />
-        )}
-        
-        {upcomingMovies.length > 0 && (
-          <MovieRow 
-            title="Próximos estrenos"
-            movies={upcomingMovies}
-            onMovieClick={onWatchTrailer}
-          />
-        )}
+        ))}
       </div>
-
-      <About />
     </main>
   );
 }

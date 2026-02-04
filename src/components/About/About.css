@@ -34,14 +34,14 @@
 
 .about__text-block:hover {
   background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(229, 9, 20, 0.3);
+  border-color: rgba(202, 202, 202, 0.3);
   transform: translateY(-4px);
 }
 
 .about__subtitle {
   font-size: 24px;
   font-weight: 600;
-  color: #e50914;
+  color: #ffffff;
   margin: 0 0 16px;
 }
 

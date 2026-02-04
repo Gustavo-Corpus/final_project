@@ -1,89 +1,141 @@
+import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
 import Header from '../Header/Header';
+import Hero from '../Hero/Hero';
 import Main from '../Main/Main';
 import SearchResults from '../SearchResults/SearchResults';
-import Footer from '../Footer/Footer';
 import TrailerModal from '../TrailerModal/TrailerModal';
+import Preloader from '../Preloader/Preloader';
 import moviesApi from '../../utils/MoviesApi';
-import { MAIN_ROUTE, SEARCH_ROUTE } from '../../utils/constants';
+import About from '../About/About';
 import './App.css';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [contentType, setContentType] = useState('movie');
+  const [popularItems, setPopularItems] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
 
-  const handleSearch = (query) => {
-    setIsSearching(true);
-    moviesApi.searchMovies(query)
-      .then((data) => {
-        setSearchResults(data.results);
-      })
-      .catch((err) => {
-        console.error('Error searching movies:', err);
-        alert('Error al buscar películas');
-      })
-      .finally(() => {
-        setIsSearching(false);
-      });
-  };
+  useEffect(() => {
+    loadPopularContent();
+  }, [contentType]);
 
-  const handleWatchTrailer = (movie) => {
-    setSelectedMovie(movie);
-    moviesApi.getMovieVideos(movie.id)
-      .then((data) => {
-        const trailer = data.results.find(
-          (video) => video.type === 'Trailer' && video.site === 'YouTube'
-        );
-        if (trailer) {
-          setTrailerKey(trailer.key);
-        } else {
-          alert('No hay trailer disponible para esta película');
-          setSelectedMovie(null);
-        }
-      })
-      .catch((err) => {
-        console.error('Error loading trailer:', err);
-        alert('Error al cargar el trailer');
-        setSelectedMovie(null);
-      });
-  };
+  async function loadPopularContent() {
+    try {
+      setIsLoading(true);
+      const data = await moviesApi.getPopularContent(contentType);
+      setPopularItems(data.results.slice(0, 10));
+    } catch (err) {
+      console.error('Error loading popular content:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
-  const handleCloseTrailer = () => {
-    setSelectedMovie(null);
+  async function handleSearch(query) {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setSearchQuery('');
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      setSearchQuery(query);
+      const data = await moviesApi.searchContent(query, contentType);
+      setSearchResults(data.results);
+    } catch (err) {
+      console.error('Error searching:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleWatchTrailer(item) {
+    try {
+      setSelectedItem(item);
+      const videos = await moviesApi.getContentVideos(item.id, contentType);
+      const trailer = videos.results.find(
+        (video) => video.type === 'Trailer' && video.site === 'YouTube'
+      );
+      if (trailer) {
+        setTrailerKey(trailer.key);
+      } else {
+        // Sin trailer, pero igual abrimos el modal para mostrar la sinopsis
+        setTrailerKey(null);
+      }
+    } catch (err) {
+      console.error('Error getting trailer:', err);
+      // Aunque haya error, mostramos el modal con la información disponible
+      setTrailerKey(null);
+    }
+  }
+
+  function handleCloseModal() {
+    setSelectedItem(null);
     setTrailerKey(null);
-  };
+  }
+
+  function handleContentTypeChange(type) {
+    setContentType(type);
+    setSearchResults([]);
+    setSearchQuery('');
+  }
+
+  if (isLoading && popularItems.length === 0) {
+    return <Preloader />;
+  }
 
   return (
     <div className="app">
-      <Header onSearch={handleSearch} />
+      <Header 
+        onSearch={handleSearch} 
+        contentType={contentType}
+        onContentTypeChange={handleContentTypeChange}
+      />
+      
       <Routes>
-        <Route 
-          path={MAIN_ROUTE} 
-          element={<Main onWatchTrailer={handleWatchTrailer} />} 
-        />
-        <Route 
-          path={SEARCH_ROUTE} 
+        <Route
+          path="/"
           element={
-            <SearchResults 
-              movies={searchResults}
-              isLoading={isSearching}
+            <>
+              <Hero 
+                items={popularItems}
+                contentType={contentType}
+              />
+              <Main 
+                contentType={contentType}
+                onWatchTrailer={handleWatchTrailer}
+              />
+            </>
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            <SearchResults
+              items={searchResults}
+              query={searchQuery}
+              contentType={contentType}
               onWatchTrailer={handleWatchTrailer}
             />
-          } 
+          }
         />
       </Routes>
-      <Footer />
-      
-      {selectedMovie && trailerKey && (
-        <TrailerModal 
-          movie={selectedMovie}
+
+      {selectedItem && (
+        <TrailerModal
+          item={selectedItem}
           trailerKey={trailerKey}
-          onClose={handleCloseTrailer}
+          onClose={handleCloseModal}
+          contentType={contentType}
         />
       )}
+
+      <About />
     </div>
   );
 }

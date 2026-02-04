@@ -14,35 +14,82 @@ class MoviesApi {
     return Promise.reject(`Error: ${res.status}`);
   }
 
-  searchMovies(query) {
+  // Obtener contenido por género
+  getContentByGenre(type = 'movie', genreId) {
     return fetch(
-      `${this._baseUrl}/search/movie?api_key=${this._apiKey}&language=es-MX&query=${query}&include_adult=false`
+      `${this._baseUrl}/discover/${type}?api_key=${this._apiKey}&language=es-MX&sort_by=popularity.desc&with_genres=${genreId}&page=1`
     )
       .then(this._checkResponse)
       .catch((err) => {
-        console.error('Error searching movies:', err);
+        console.error('Error getting content by genre:', err);
         throw err;
       });
   }
 
-  getPopularMovies() {
+  // Métodos generales
+  getPopularContent(type = 'movie') {
     return fetch(
-      `${this._baseUrl}/movie/popular?api_key=${this._apiKey}&language=es-MX&page=1`
+      `${this._baseUrl}/${type}/popular?api_key=${this._apiKey}&language=es-MX&page=1`
     )
       .then(this._checkResponse)
       .catch((err) => {
-        console.error('Error getting popular movies:', err);
+        console.error('Error getting popular content:', err);
         throw err;
       });
   }
 
-  getMovieVideos(movieId) {
+  getTopRatedContent(type = 'movie') {
     return fetch(
-      `${this._baseUrl}/movie/${movieId}/videos?api_key=${this._apiKey}&language=es-MX`
+      `${this._baseUrl}/${type}/top_rated?api_key=${this._apiKey}&language=es-MX&page=1`
     )
       .then(this._checkResponse)
       .catch((err) => {
-        console.error('Error getting movie videos:', err);
+        console.error('Error getting top rated content:', err);
+        throw err;
+      });
+  }
+
+  getUpcomingContent(type = 'movie') {
+    const endpoint = type === 'movie' ? 'upcoming' : 'on_the_air';
+    return fetch(
+      `${this._baseUrl}/${type}/${endpoint}?api_key=${this._apiKey}&language=es-MX&page=1`
+    )
+      .then(this._checkResponse)
+      .catch((err) => {
+        console.error('Error getting upcoming content:', err);
+        throw err;
+      });
+  }
+
+  getTrendingContent(type = 'movie') {
+    return fetch(
+      `${this._baseUrl}/trending/${type}/week?api_key=${this._apiKey}&language=es-MX`
+    )
+      .then(this._checkResponse)
+      .catch((err) => {
+        console.error('Error getting trending content:', err);
+        throw err;
+      });
+  }
+
+  searchContent(query, type = 'movie') {
+    return fetch(
+      `${this._baseUrl}/search/${type}?api_key=${this._apiKey}&language=es-MX&query=${query}&include_adult=false`
+    )
+      .then(this._checkResponse)
+      .catch((err) => {
+        console.error('Error searching content:', err);
+        throw err;
+      });
+  }
+
+  getContentVideos(id, type = 'movie') {
+    return fetch(
+      `${this._baseUrl}/${type}/${id}/videos?api_key=${this._apiKey}&language=es-MX`
+    )
+      .then(this._checkResponse)
+      .catch((err) => {
+        console.error('Error getting content videos:', err);
         throw err;
       });
   }
