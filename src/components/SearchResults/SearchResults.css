@@ -55,7 +55,7 @@
 }
 
 .search-results__card:hover .search-results__image-container {
-  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.4);
 }
 
 .search-results__image {
@@ -137,9 +137,9 @@
 
 .search-results__more-button {
   padding: 16px 48px;
-  background: rgba(0, 212, 255, 0.1);
-  color: #00d4ff;
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: rgb(255, 255, 255);
+  color: black;
+  border: 1px solid rgba(155, 155, 155, 0.3);
   border-radius: 10px;
   font-size: 16px;
   font-weight: 700;
@@ -148,10 +148,11 @@
 }
 
 .search-results__more-button:hover {
-  background: rgba(0, 212, 255, 0.2);
-  border-color: rgba(0, 212, 255, 0.5);
+  background: rgb(0, 0, 0);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 212, 255, 0.2);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.317);
 }
 
 .search-results--empty {
@@ -167,6 +168,10 @@
 }
 
 .search-results__error-icon {
+  width: 150px;
+}
+
+.search-results__search-icon {
   width: 150px;
 }
 

@@ -1,32 +1,50 @@
 import { useState } from 'react';
 import './SearchResults.css';
 import iconError from '../../assets/error.svg';
+import searchIcon from "../../assets/search.svg";
 
-function SearchResults({ items, query, contentType, onWatchTrailer }) {
-  const [visibleCount, setVisibleCount] = useState(18);
+const ITEMS_PER_PAGE = 3;
+
+function SearchResults({ items, query, contentType, onWatchTrailer, isLoading, hasError }) {
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   const visibleItems = items.slice(0, visibleCount);
   const hasMore = visibleCount < items.length;
 
   const handleShowMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 18, items.length));
+    setVisibleCount((prev) => Math.min(prev + ITEMS_PER_PAGE, items.length));
   };
+
+  if (hasError) {
+    return (
+      <section className="search-results search-results--empty">
+        <div className="search-results__empty-container">
+          <img src= {iconError} alt="Icono de error" className="search-results__error-icon" />
+          <h2 className="search-results__empty-title">Error al buscar contenido</h2>
+          <p className="search-results__empty-text">
+            Hubo un problema al realizar la búsqueda. Por favor, inténtalo de nuevo.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <section className="search-results search-results--empty">
+        <div className="search-results__empty-container">
+          <div className="search-results__spinner"></div>
+          <h2 className="search-results__empty-title">Buscando...</h2>
+        </div>
+      </section>
+    );
+  }
 
   if (!query) {
     return (
       <section className="search-results search-results--empty">
         <div className="search-results__empty-container">
-          <svg
-            width="100"
-            height="100"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            className="search-results__empty-icon"
-          >
-            <circle cx="11" cy="11" r="8" strokeWidth="1.5" />
-            <path d="m21 21-4.35-4.35" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <img src= {searchIcon} alt="Icono Search" className="search-results__search-icon" />
           <h2 className="search-results__empty-title">Busca tu contenido favorito</h2>
           <p className="search-results__empty-text">
             Escribe en el buscador para encontrar {contentType === 'movie' ? 'películas' : 'series'}
@@ -41,7 +59,7 @@ function SearchResults({ items, query, contentType, onWatchTrailer }) {
       <section className="search-results search-results--empty">
         <div className="search-results__empty-container">
           <img src= {iconError} alt="Icono de error" className="search-results__error-icon" />
-          <h2 className="search-results__empty-title">No se encontraron resultados</h2>
+          <h2 className="search-results__empty-title">No se ha encontrado nada</h2>
           <p className="search-results__empty-text">
             Intenta buscar con otras palabras clave
           </p>
@@ -79,7 +97,7 @@ function SearchResults({ items, query, contentType, onWatchTrailer }) {
                         ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
                         : 'https://via.placeholder.com/300x450?text=Sin+Imagen'
                     }
-                    alt={title}
+                    alt={`Portada de ${title}`}
                     className="search-results__image"
                   />
                   <div className="search-results__overlay">

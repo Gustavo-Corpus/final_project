@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import About from '../About/About';
 import Header from '../Header/Header';
 import Hero from '../Hero/Hero';
 import Main from '../Main/Main';
@@ -7,7 +8,6 @@ import SearchResults from '../SearchResults/SearchResults';
 import TrailerModal from '../TrailerModal/TrailerModal';
 import Preloader from '../Preloader/Preloader';
 import moviesApi from '../../utils/MoviesApi';
-import About from '../About/About';
 import './App.css';
 
 function App() {
@@ -18,6 +18,9 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     loadPopularContent();
@@ -26,10 +29,12 @@ function App() {
   async function loadPopularContent() {
     try {
       setIsLoading(true);
+      setHasError(false);
       const data = await moviesApi.getPopularContent(contentType);
       setPopularItems(data.results.slice(0, 10));
     } catch (err) {
       console.error('Error loading popular content:', err);
+      setHasError(true);
     } finally {
       setIsLoading(false);
     }
@@ -39,18 +44,22 @@ function App() {
     if (!query.trim()) {
       setSearchResults([]);
       setSearchQuery('');
+      setSearchError(false);
       return;
     }
 
     try {
-      setIsLoading(true);
+      setSearchLoading(true);
+      setSearchError(false);
       setSearchQuery(query);
       const data = await moviesApi.searchContent(query, contentType);
       setSearchResults(data.results);
     } catch (err) {
       console.error('Error searching:', err);
+      setSearchError(true);
+      setSearchResults([]);
     } finally {
-      setIsLoading(false);
+      setSearchLoading(false);
     }
   }
 
@@ -81,10 +90,28 @@ function App() {
     setContentType(type);
     setSearchResults([]);
     setSearchQuery('');
+    setSearchError(false);
   }
 
   if (isLoading && popularItems.length === 0) {
     return <Preloader />;
+  }
+
+  if (hasError) {
+    return (
+      <div className="app">
+        <Header 
+          onSearch={handleSearch} 
+          contentType={contentType}
+          onContentTypeChange={handleContentTypeChange}
+        />
+        <div className="app__error">
+          <h2 className="app__error-title">Error al cargar el contenido</h2>
+          <p className="app__error-text">Por favor, recarga la página o inténtalo más tarde.</p>
+          <button className="app__error-button" onClick={loadPopularContent}>Reintentar</button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -119,6 +146,8 @@ function App() {
               query={searchQuery}
               contentType={contentType}
               onWatchTrailer={handleWatchTrailer}
+              isLoading={searchLoading}
+              hasError={searchError}
             />
           }
         />
