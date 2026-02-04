@@ -1,5 +1,7 @@
 # PRELUDE - Plataforma de Trailers
 
+Puedes ver el proyecto desplegado en: [Enlace a GitHub Pages](https://gustavo-corpus.github.io/final_project)
+
 ## 🎬 Descripción
 Aplicación web que tiene como fin explorar trailers de películas y series.
 

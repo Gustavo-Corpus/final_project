@@ -64,12 +64,10 @@ function App() {
       if (trailer) {
         setTrailerKey(trailer.key);
       } else {
-        // Sin trailer, pero igual abrimos el modal para mostrar la sinopsis
         setTrailerKey(null);
       }
     } catch (err) {
       console.error('Error getting trailer:', err);
-      // Aunque haya error, mostramos el modal con la información disponible
       setTrailerKey(null);
     }
   }

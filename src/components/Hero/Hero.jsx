@@ -13,11 +13,10 @@ function Hero({ items, contentType }) {
   const heroRef = useRef(null);
   const iframeRef = useRef(null);
 
-  // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
 
   const onTouchStart = (e) => {
-    setTouchEnd(0); // reset
+    setTouchEnd(0);
     setTouchStart(e.targetTouches[0].clientX);
   };
 
@@ -40,7 +39,6 @@ function Hero({ items, contentType }) {
     }
   };
 
-  // Observer para detectar si el Hero está visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -62,7 +60,6 @@ function Hero({ items, contentType }) {
     };
   }, []);
 
-  // Pausar/reproducir video según visibilidad
   useEffect(() => {
     if (iframeRef.current && showVideo && trailerKey) {
       const iframe = iframeRef.current;
@@ -156,7 +153,6 @@ function Hero({ items, contentType }) {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      {/* Video de fondo o imagen */}
       <div className="hero__background">
         {showVideo && trailerKey ? (
           <iframe
@@ -204,7 +200,6 @@ function Hero({ items, contentType }) {
           </p>
         </div>
 
-        {/* Flechas de navegación */}
         <button className="hero__arrow hero__arrow--left" onClick={handlePrev}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -216,7 +211,6 @@ function Hero({ items, contentType }) {
           </svg>
         </button>
 
-        {/* Indicadores */}
         <div className="hero__dots">
           {items.map((_, index) => (
             <button

@@ -3,7 +3,6 @@
   position: relative;
 }
 
-/* Desvanecido superior de la sección */
 .movie-row::before {
   content: '';
   position: absolute;
@@ -55,7 +54,6 @@
   padding: 8px 0 16px;
 }
 
-/* Desvanecidos laterales - FIJOS */
 .movie-row__fade {
   position: fixed;
   top: 0;
@@ -86,7 +84,6 @@
   );
 }
 
-/* Flechas de navegación */
 .movie-row__arrow {
   position: absolute;
   top: 50%;
@@ -125,7 +122,6 @@
   right: 0;
 }
 
-/* Cards */
 .movie-row__card {
   flex-shrink: 0;
   width: 220px;
@@ -215,7 +211,6 @@
   color: #fbbf24;
 }
 
-/* Responsive */
 @media screen and (max-width: 1024px) {
   .movie-row__header,
   .movie-row__container {

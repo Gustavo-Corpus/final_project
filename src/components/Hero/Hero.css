@@ -219,7 +219,6 @@
   }
 }
 
-/* DISEÑO VERTICAL para tablet y móvil */
 @media screen and (max-width: 768px) {
   .hero {
     height: auto;
@@ -275,7 +274,6 @@
     line-height: 1.5;
   }
 
-  /* Ocultar flechas en tablet */
   .hero__arrow {
     display: none;
   }

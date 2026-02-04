@@ -15,23 +15,22 @@ function Main({ contentType, onWatchTrailer }) {
     try {
       setIsLoading(true);
       
-      // Obtener películas/series por género
       const genreIds = contentType === 'movie' 
         ? {
-            action: 28,      // Acción
-            scifi: 878,      // Ciencia Ficción
-            drama: 18,       // Drama
-            comedy: 35,      // Comedia
-            thriller: 53,    // Thriller
-            horror: 27,      // Terror
+            action: 28,
+            scifi: 878,
+            drama: 18,
+            comedy: 35,
+            thriller: 53,
+            horror: 27,
           }
         : {
-            action: 10759,   // Acción y Aventura
-            scifi: 10765,    // Sci-Fi & Fantasy
-            drama: 18,       // Drama
-            comedy: 35,      // Comedia
-            crime: 80,       // Crimen
-            mystery: 9648,   // Misterio
+            action: 10759,
+            scifi: 10765,
+            drama: 18,
+            comedy: 35,
+            crime: 80,
+            mystery: 9648,
           };
 
       const categoryPromises = Object.entries(genreIds).map(([key, genreId]) =>

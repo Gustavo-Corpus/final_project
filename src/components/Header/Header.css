@@ -66,6 +66,10 @@
   box-shadow: 0 0 0 3px rgba(231, 231, 231, 0.15);
 }
 
+.header__search-icon {
+  width: 26px;
+}
+
 .header__input {
   flex: 1;
   border: none;
@@ -84,7 +88,6 @@
 .header__search-button {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -95,7 +98,7 @@
 }
 
 .header__search-button:hover {
-  color: #ffffff;
+  color: #9f9f9f;
 }
 
 .header__toggle {
@@ -130,7 +133,6 @@
   box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
 }
 
-/* Responsive */
 @media screen and (max-width: 1024px) {
   .header__container {
     padding: 18px 3vw;

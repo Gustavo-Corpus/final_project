@@ -39,7 +39,6 @@ function MovieRow({ title, items, contentType, onWatchTrailer }) {
         </button>
 
         <div className="movie-row__scroll" ref={rowRef}>
-          {/* Desvanecido izquierdo */}
           <div className="movie-row__fade movie-row__fade--left"></div>
           
           <div className="movie-row__content">
@@ -80,8 +79,7 @@ function MovieRow({ title, items, contentType, onWatchTrailer }) {
               );
             })}
           </div>
-          
-          {/* Desvanecido derecho */}
+
           <div className="movie-row__fade movie-row__fade--right"></div>
         </div>
 

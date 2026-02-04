@@ -36,7 +36,6 @@ function TrailerModal({ item, trailerKey, onClose, contentType }) {
 
         {trailerKey ? (
           <>
-            {/* Video del trailer */}
             <div className="trailer-modal__video-container">
               <iframe
                 className="trailer-modal__iframe"
@@ -48,7 +47,6 @@ function TrailerModal({ item, trailerKey, onClose, contentType }) {
               />
             </div>
 
-            {/* Información debajo del video */}
             <div className="trailer-modal__info">
               <h2 className="trailer-modal__title">{title}</h2>
               <div className="trailer-modal__meta">
@@ -69,10 +67,8 @@ function TrailerModal({ item, trailerKey, onClose, contentType }) {
           </>
         ) : (
           <>
-            {/* Sin trailer - mostrar portada + mensaje */}
             <div className="trailer-modal__no-trailer">
               <div className="trailer-modal__no-trailer-content">
-                {/* Portada horizontal a la izquierda */}
                 <div className="trailer-modal__poster">
                   <img
                     src={
@@ -85,7 +81,6 @@ function TrailerModal({ item, trailerKey, onClose, contentType }) {
                   />
                 </div>
 
-                {/* Mensaje a la derecha */}
                 <div className="trailer-modal__no-trailer-message">
                   <div className="trailer-modal__no-trailer-container">
                     <img 
@@ -102,7 +97,6 @@ function TrailerModal({ item, trailerKey, onClose, contentType }) {
               </div>
             </div>
 
-            {/* Información del contenido */}
             <div className="trailer-modal__info trailer-modal__info--no-trailer">
               <h2 className="trailer-modal__title">{title}</h2>
               <div className="trailer-modal__meta">

@@ -5,7 +5,6 @@
 }
 
 :root {
-  /* Paleta Oscura - Sin rojos */
   --color-bg-primary: #0a0a0a;
   --color-bg-secondary: #1a1a1a;
   --color-bg-card: #1f1f1f;
@@ -21,12 +20,10 @@
   --color-border: rgba(255, 255, 255, 0.1);
   --color-border-light: rgba(255, 255, 255, 0.05);
   
-  /* Sombras oscuras */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.8);
   
-  /* Transiciones */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
@@ -49,18 +46,15 @@ body {
   flex-direction: column;
 }
 
-/* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
-/* Selection */
 ::selection {
   background: rgba(0, 212, 255, 0.3);
   color: #ffffff;
 }
 
-/* Focus visible */
 *:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -70,13 +64,11 @@ html {
   outline: none;
 }
 
-/* Links */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Buttons */
 button {
   font-family: inherit;
   cursor: pointer;

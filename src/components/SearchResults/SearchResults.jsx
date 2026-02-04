@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './SearchResults.css';
+import iconError from '../../assets/error.svg';
 
 function SearchResults({ items, query, contentType, onWatchTrailer }) {
   const [visibleCount, setVisibleCount] = useState(18);
@@ -39,18 +40,7 @@ function SearchResults({ items, query, contentType, onWatchTrailer }) {
     return (
       <section className="search-results search-results--empty">
         <div className="search-results__empty-container">
-          <svg
-            width="100"
-            height="100"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            className="search-results__empty-icon"
-          >
-            <circle cx="12" cy="12" r="10" strokeWidth="1.5" />
-            <line x1="15" y1="9" x2="9" y2="15" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="9" y1="9" x2="15" y2="15" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
+          <img src= {iconError} alt="Icono de error" className="search-results__error-icon" />
           <h2 className="search-results__empty-title">No se encontraron resultados</h2>
           <p className="search-results__empty-text">
             Intenta buscar con otras palabras clave

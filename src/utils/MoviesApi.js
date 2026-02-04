@@ -14,7 +14,6 @@ class MoviesApi {
     return Promise.reject(`Error: ${res.status}`);
   }
 
-  // Obtener contenido por género
   getContentByGenre(type = 'movie', genreId) {
     return fetch(
       `${this._baseUrl}/discover/${type}?api_key=${this._apiKey}&language=es-MX&sort_by=popularity.desc&with_genres=${genreId}&page=1`
@@ -26,7 +25,6 @@ class MoviesApi {
       });
   }
 
-  // Métodos generales
   getPopularContent(type = 'movie') {
     return fetch(
       `${this._baseUrl}/${type}/popular?api_key=${this._apiKey}&language=es-MX&page=1`
