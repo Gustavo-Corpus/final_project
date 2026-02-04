@@ -13,10 +13,6 @@
   --color-text-secondary: #a0a0a0;
   --color-text-muted: #606060;
   
-  --color-accent: #00d4ff;
-  --color-accent-hover: #00a8cc;
-  --color-accent-alt: #0ea5e9;
-  
   --color-border: rgba(255, 255, 255, 0.1);
   --color-border-light: rgba(255, 255, 255, 0.05);
   
@@ -56,7 +52,6 @@ html {
 }
 
 *:focus-visible {
-  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
